@@ -1,4 +1,6 @@
 [core]
-    remote = storage
+    remote = bikes
 ['remote "storage"']
     url = gdrive://10_YX38k7TH074TiLb6paVlirZWjLQt8e
+['remote "bikes"']
+    url = gs://dataset_tesuk4958

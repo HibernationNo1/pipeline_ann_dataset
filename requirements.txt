@@ -1,1 +1,5 @@
 dvc[gdrive]
+
+# dataset_0.0.1 
+# dvc remote add -d storage gdrive://10_YX38k7TH074TiLb6paVlirZWjLQt8e
+# git remote add origin https://github.com/HibernationNo1/project_dataset.git
