@@ -1,8 +1,4 @@
 [core]
     remote = pipeline_dataset
-['remote "storage"']
-    url = gdrive://10_YX38k7TH074TiLb6paVlirZWjLQt8e
-['remote "bikes"']
-    url = gs://dataset_tesuk4958
 ['remote "pipeline_dataset"']
     url = gs://dataset_test_taeuk4958
