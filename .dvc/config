@@ -1,0 +1,6 @@
+[core]
+    remote = ann_dataset
+['remote "ann_dataset"']
+    url = gs://ann_dataset_taeuk4958
+['remote "record_dataset"']
+    url = gs://record_dataset_taeuk4958
