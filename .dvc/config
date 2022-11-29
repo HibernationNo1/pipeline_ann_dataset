@@ -1,4 +1,0 @@
-[core]
-    remote = pipeline_dataset
-['remote "pipeline_dataset"']
-    url = gs://dataset_test_taeuk4958
