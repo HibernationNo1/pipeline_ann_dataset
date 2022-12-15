@@ -90,9 +90,9 @@ def update_ann_table(db, db_cfg, dataset_cfg, commit = False):
     json_list = glob.glob(ann_path +"/*.json")
     assert len(image_list) == len(json_list), f"number of images and json files are not same!!  \n"\
            f"number of images {len(image_list)},     number of json files : {len(json_list)}"
-    
-    num_results = db.cursor.execute(f"SELECT * FROM {db_cfg.ann_dataset_table} WHERE ann_version = '{db_cfg.ann_version}'")
-    assert num_results == 0, f"ann version: {db_cfg.ann_version} has been stored in DB!!  "\
+
+    num_results = db.cursor.execute(f"SELECT * FROM {db_cfg.ann_dataset_table} WHERE ann_version = '{db_cfg.version}'")
+    assert num_results == 0, f"ann version: {db_cfg.version} has been stored in DB!!  "\
            f"DB: [{db_cfg.db_name}],         table: [{db_cfg.ann_dataset_table}]"
     
     # insert dataset to database

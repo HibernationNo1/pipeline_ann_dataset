@@ -19,7 +19,7 @@ class DB_cfg():
                                     image_name VARCHAR(200),
                                     ann_path VARCHAR(100),
                                     ann_version VARCHAR(10),
-                                    PRIMARY KEY(ID)
+                                    PRIMARY KEY(id)
                                     );
                                 """
     

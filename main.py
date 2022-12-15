@@ -6,18 +6,20 @@ from database import update_db
 from dvc_dataset import upload_dvc
 
 
-# python main.py --port 3306 --passwd 7679 --screts client_secrets.json --ann --version 0.0.0
+# python main.py --port 3306 --passwd 7679 --screts client_secrets.json --ann --commit --version 0.0.0 
 if __name__=="__main__":
     dvc_cfg, dataset_cfg, db_cfg = DVC_cfg(), Dataset_cfg(), DB_cfg()
     
     parser = argparse.ArgumentParser() 
+    parser.add_argument('--host', type = str, 
+                        help= "host account of database")
     parser.add_argument('--port', type = int, required = True, 
                         help= "port number to connect to database")
     parser.add_argument('--passwd', type = str, required = True,
                         help= "password to connect to database")
     parser.add_argument('--commit', default= False, action="store_true",
                         help= "whether use commit to database")
-    parser.add_argument('--version', default= str, help= "version of ann_dataset or recorc_dataset")
+    parser.add_argument('--version', help= "version of ann_dataset or recorc_dataset")
     
     parser.add_argument('--screts', type = str, required = True,
                         help= "path of client_secrets")

@@ -1,0 +1,5 @@
+outs:
+- md5: cd8909470a1a5018dee494313fbc2bfe.dir
+  size: 504872179
+  nfiles: 2392
+  path: ann_dataset
