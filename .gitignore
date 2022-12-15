@@ -2,4 +2,3 @@
 /__pycache__
 *.pyc
 client_secrets.json
-tmp.py
