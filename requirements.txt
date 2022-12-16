@@ -1,4 +1,7 @@
-dvc[gdrive]
+dvc[gs]
+hibernation_no1
+pymysql
+
 
 # dataset_0.0.1 
 # dvc remote add -d storage gdrive://10_YX38k7TH074TiLb6paVlirZWjLQt8e

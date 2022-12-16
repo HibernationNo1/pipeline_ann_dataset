@@ -28,6 +28,7 @@ db = dict(
                                       id INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                       dataset_purpose VARCHAR(10) NOT NULL,
                                       image_name VARCHAR(200) NOT NULL,
+                                      recode_file VARCHAR(200) NOT NULL, 
                                       category VARCHAR(20) NOT NULL,
                                       recode_version VARCHAR(10) NOT NULL,
                                       PRIMARY KEY(id)
@@ -44,13 +45,14 @@ db = dict(
                                       id INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                       dataset_purpose VARCHAR(10) NOT NULL,
                                       category VARCHAR(20) NOT NULL,
-                                      dataset_name VARCHAR(200) NOT NULL,
+                                      recode_file VARCHAR(200) NOT NULL,
                                       recode_version VARCHAR(10) NOT NULL,
                                       PRIMARY KEY(id)
                                       );
                                       """
             # dataset_purpose: one of `train` and `val`
-            # dataset_name: path of train_dataset or val_dataset file for train or validation
+            # recode_file: path of recode dataset file(.json format). 
+            #              are for train or validation(e.g. train_dataset.json or val_data.json)
             # category: category of dataset
             # recode_version: version of recoded dataset 
     )
