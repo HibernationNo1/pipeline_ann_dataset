@@ -58,7 +58,9 @@ def check_dvc_config(remote_user_config):
 
 
 def check_dvc_dataset_status(cfg):
-    target_dataset = osp.join(os.getcwd(), cfg.dvc.dataset_cate)
+    target_dataset = osp.join(os.getcwd(), cfg.dvc.dataset_cate,
+                                           cfg.dvc.ann.name,
+                                           cfg.dvc.ann.version)
     assert osp.isdir(target_dataset), f"\n>> Path: {target_dataset} is not exist!!"  
     
     # comfirm dataset quantity
@@ -74,4 +76,4 @@ def check_dvc_dataset_status(cfg):
         f"set google storage credentials! "\
         f"\n  >> run:   $ dvc remote modify --local {dvc_cfg['defualt_remote']} credentialpath `client_secrets_path`"
                                     
-    return image_list, json_list
+    return image_list, json_list, target_dataset

@@ -26,7 +26,7 @@ db = dict(
         image_dataset_schema = f"""
                                       CREATE TABLE image_dataset (
                                       id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-                                      dataset_purpose VARCHAR(10) NOT NULL,
+                                      dataset_purpose VARCHAR(10) NOT NULL,     # rename to purpose
                                       image_name VARCHAR(200) NOT NULL,
                                       recode_file VARCHAR(200) NOT NULL, 
                                       category VARCHAR(20) NOT NULL,
@@ -39,8 +39,8 @@ db = dict(
             # category: category of dataset
             # recode_version: version of recoded dataset 
         
-        train_dataset = "train_dataset",
-        train_dataset_schema = f"""
+        train_dataset = "train_dataset",        # TODO: delete
+        train_dataset_schema = f"""     
                                       CREATE TABLE train_dataset (
                                       id INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                       dataset_purpose VARCHAR(10) NOT NULL,
