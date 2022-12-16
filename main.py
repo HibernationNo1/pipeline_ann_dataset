@@ -38,9 +38,9 @@ if __name__=="__main__":
     cfg = Config.fromfile(args.cfg)
     set_config(args, cfg)
     
-    image_list, json_list = check_dvc_dataset_status(cfg)
-    
-    target_dataset_dvc = osp.join(os.getcwd(), f"{cfg.dvc.dataset_cate}.dvc")
+    image_list, json_list, target_dataset = check_dvc_dataset_status(cfg)
+  
+    target_dataset_dvc = osp.join(os.getcwd(), f"{target_dataset}.dvc")
     assert osp.isfile(target_dataset_dvc), f"\n>> Path: {target_dataset_dvc} is not exist!!"\
             f"\n>> run      $ dvc add {osp.basename(target_dataset_dvc).split('.')[0]}"
     
@@ -57,8 +57,8 @@ if __name__=="__main__":
     create_table(cursor, cfg.db.table.image_dataset, cfg.db.table.image_dataset_schema)
     create_table(cursor, cfg.db.table.train_dataset, cfg.db.table.train_dataset_schema)
 
-    num_results = cursor.execute(f"SELECT * FROM {cfg.db.table.ann_dataset} WHERE ann_version = '{cfg.dvc.ann_version}'")
-    assert num_results == 0, f"ann version: {cfg.dvc.ann_version} has been stored in DB!!  "\
+    num_results = cursor.execute(f"SELECT * FROM {cfg.db.table.ann_dataset} WHERE ann_version = '{cfg.dvc.ann.version}'")
+    assert num_results == 0, f"ann version: {cfg.dvc.ann.version} has been stored in DB!!  "\
            f"\n     DB: {cfg.db.db_name},         table: {cfg.db.table.ann_dataset},     quantity: {num_results} "
     
    
@@ -69,11 +69,11 @@ if __name__=="__main__":
         image_name, json_name = os.path.basename(image_path), os.path.basename(json_path)
         insert_sql = f"INSERT INTO {cfg.db.table.ann_dataset} "\
                      f"(json_name, image_name, category, ann_version) "\
-                     f"VALUES('{json_name}', '{image_name}', '{cfg.dvc.dataset_cate}', '{cfg.dvc.ann_version}');"
+                     f"VALUES('{json_name}', '{image_name}', '{cfg.dvc.dataset_cate}', '{cfg.dvc.ann.version}');"
         
         cursor.execute(insert_sql)
     
-    num_results = cursor.execute(f"SELECT * FROM {cfg.db.table.ann_dataset} WHERE ann_version = '{cfg.dvc.ann_version}'")
+    num_results = cursor.execute(f"SELECT * FROM {cfg.db.table.ann_dataset} WHERE ann_version = '{cfg.dvc.ann.version}'")
     assert num_results == len(json_list), f"sql:: `INSERT INTO {cfg.db.table.ann_dataset}` didn't work"
     
     
