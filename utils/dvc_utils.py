@@ -3,7 +3,7 @@ import glob
 import re
 from dvc.config import Config
 
-# hibernation으로
+
 def check_dvc_config(remote_user_config):
     dvc_config_path = osp.join(Config().dvc_dir, "config")
     with open(dvc_config_path, "r") as dvc_config:
@@ -56,7 +56,7 @@ def check_dvc_config(remote_user_config):
 
     return dvc_cfg
 
-# hibernation으로
+
 def check_dvc_dataset_status(cfg):
     target_dataset = osp.join(os.getcwd(), cfg.dvc.dataset_cate)
     assert osp.isdir(target_dataset), f"\n>> Path: {target_dataset} is not exist!!"  

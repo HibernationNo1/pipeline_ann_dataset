@@ -54,7 +54,9 @@ if __name__=="__main__":
     
     
     create_table(cursor, cfg.db.table.ann_dataset, cfg.db.table.ann_dataset_schema)
-    
+    create_table(cursor, cfg.db.table.image_dataset, cfg.db.table.image_dataset_schema)
+    create_table(cursor, cfg.db.table.train_dataset, cfg.db.table.train_dataset_schema)
+
     num_results = cursor.execute(f"SELECT * FROM {cfg.db.table.ann_dataset} WHERE ann_version = '{cfg.dvc.ann_version}'")
     assert num_results == 0, f"ann version: {cfg.dvc.ann_version} has been stored in DB!!  "\
            f"\n     DB: {cfg.db.db_name},         table: {cfg.db.table.ann_dataset},     quantity: {num_results} "
@@ -76,6 +78,7 @@ if __name__=="__main__":
     
     
     whether_run_commit(cfg, database, image_list)
+    
     database.close()
 
 
