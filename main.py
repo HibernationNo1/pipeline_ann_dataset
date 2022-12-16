@@ -1,54 +1,84 @@
 import argparse
 import os, os.path as osp
 
-from config import DVC_cfg, Dataset_cfg, DB_cfg
-from database import update_db
-from dvc_dataset import upload_dvc
+from hibernation_no1.configs.config import Config
+from utils.dvc_utils import check_dvc_dataset_status
+from utils.db_utils import create_table, whether_run_commit
 
+import pymysql
 
-# python main.py --port 3306 --passwd 7679 --screts client_secrets.json --ann --commit --version 0.0.0 
-if __name__=="__main__":
-    dvc_cfg, dataset_cfg, db_cfg = DVC_cfg(), Dataset_cfg(), DB_cfg()
-    
+def _parse_args():
     parser = argparse.ArgumentParser() 
-    parser.add_argument('--host', type = str, 
+    parser.add_argument("--cfg", required = True, help="path of config file") 
+    
+    parser.add_argument('--db_host', type = str, required= True,
                         help= "host account of database")
-    parser.add_argument('--port', type = int, required = True, 
+    parser.add_argument('--db_port', type = int, required = True, 
                         help= "port number to connect to database")
-    parser.add_argument('--passwd', type = str, required = True,
+    parser.add_argument('--db_passwd', type = str, required = True,
                         help= "password to connect to database")
-    parser.add_argument('--commit', default= False, action="store_true",
-                        help= "whether use commit to database")
-    parser.add_argument('--version', help= "version of ann_dataset or recorc_dataset")
     
-    parser.add_argument('--screts', type = str, required = True,
-                        help= "path of client_secrets")
-    
-    
-    parser.add_argument('--ann', default= False, action="store_true",  
-                        help= "if True, run 'ann' mode")
-    parser.add_argument('--record', default= False, action="store_true",  
-                        help= "if True, run 'record' mode")
-    
-    
+    parser.add_argument('--db_user', type = str, help= "user name to connect to database")
+    parser.add_argument('--db_name', type = str, help= "database name to connect")
     
     
     args = parser.parse_args()
     
-    assert (args.ann != args.record), f"Only one mode between 'ann' and 'record' shuold be runing"\
-                                      f" [ann: {args.ann}, record: {args.record}]"
-    assert osp.isfile(osp.join(os.getcwd(), args.screts)), f"Path that does not exist!  "\
-                                                           f"path: [{osp.join(os.getcwd(), args.screts)}]"
-                                                           
-    if args.ann: dataset_cfg.target_dir = dvc_cfg.default_remote = dataset_cfg.ann_dataset_dir_name
-    else: dataset_cfg.target_dir = dvc_cfg.default_remote = dataset_cfg.record_dataset_dir_name
+    return args
+
+
+def set_config(args, cfg):
+    if args.db_user is not None: cfg.db.user = args.db_user
+    if args.db_name is not None: cfg.db.db_name = args.db_name
+    
+
+if __name__=="__main__":
+    args  =_parse_args()
+    
+    cfg = Config.fromfile(args.cfg)
+    set_config(args, cfg)
+    
+    image_list, json_list = check_dvc_dataset_status(cfg)
+    
+    target_dataset_dvc = osp.join(os.getcwd(), f"{cfg.dvc.dataset_cate}.dvc")
+    assert osp.isfile(target_dataset_dvc), f"\n>> Path: {target_dataset_dvc} is not exist!!"\
+            f"\n>> run      $ dvc add {osp.basename(target_dataset_dvc).split('.')[0]}"
+    
+    database = pymysql.connect(host=args.db_host, 
+                        port=args.db_port, 
+                        user=cfg.db.user, 
+                        passwd=args.db_passwd, 
+                        database=cfg.db.db_name, 
+                        charset=cfg.db.charset)
+    cursor = database.cursor() 
+    
+    
+    create_table(cursor, cfg.db.table.ann_dataset, cfg.db.table.ann_dataset_schema)
+    
+    num_results = cursor.execute(f"SELECT * FROM {cfg.db.table.ann_dataset} WHERE ann_version = '{cfg.dvc.ann_version}'")
+    assert num_results == 0, f"ann version: {cfg.dvc.ann_version} has been stored in DB!!  "\
+           f"\n     DB: {cfg.db.db_name},         table: {cfg.db.table.ann_dataset},     quantity: {num_results} "
+    
+   
+                              
+    # insert dataset to database
+    for i, img_json_path in enumerate(zip(image_list, json_list)):
+        image_path, json_path = img_json_path
+        image_name, json_name = os.path.basename(image_path), os.path.basename(json_path)
+        insert_sql = f"INSERT INTO {cfg.db.table.ann_dataset} "\
+                     f"(json_name, image_name, category, ann_version) "\
+                     f"VALUES('{json_name}', '{image_name}', '{cfg.dvc.dataset_cate}', '{cfg.dvc.ann_version}');"
         
-    if args.version is not None: db_cfg.version = args.version
+        cursor.execute(insert_sql)
+    
+    num_results = cursor.execute(f"SELECT * FROM {cfg.db.table.ann_dataset} WHERE ann_version = '{cfg.dvc.ann_version}'")
+    assert num_results == len(json_list), f"sql:: `INSERT INTO {cfg.db.table.ann_dataset}` didn't work"
+    
+    
+    whether_run_commit(cfg, database, image_list)
+    database.close()
+
+
+    
     
   
-    update_db(db_cfg, dataset_cfg, 
-              args.port, args.passwd, 
-              ann = args.ann, commit = args.commit)
-        
-  
-    upload_dvc(dvc_cfg, args.screts, db_cfg.version)
