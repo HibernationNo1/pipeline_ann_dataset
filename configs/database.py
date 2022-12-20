@@ -2,12 +2,14 @@ db = dict(
     host=None, 
     port=None, 
     user='project-pipeline', 
-    db_name='ann_dataset',         # TODO rename
+    db_name='dataset',      
     charset='utf8',   
     
     table = dict(
-        ann_dataset = "ann_dataset",           # name of annotations dataset table
-        ann_dataset_schema = f"""
+        # name of `annotations data`` table     
+        # annotations data: dataset made with labelme.exe
+        anns = "ann_dataset",           
+        anns_schema = f"""
                               CREATE TABLE ann_dataset (
                               id INT UNSIGNED NOT NULL AUTO_INCREMENT,
                               json_name VARCHAR(200) NOT NULL,
@@ -22,9 +24,11 @@ db = dict(
             # category: category of dataset
             # ann_version: version of annotation dataset
     
-        image_dataset = "image_dataset",      # name of recoded dataset table
-        image_dataset_schema = f"""
-                                      CREATE TABLE image_dataset (
+        # name of `image dataset`` table.     
+        # image dataset: images for training or validation
+        image_data = "image_data",      
+        image_data_schema = f"""
+                                      CREATE TABLE image_data (
                                       id INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                       dataset_purpose VARCHAR(10) NOT NULL,     # rename to purpose
                                       image_name VARCHAR(200) NOT NULL,
@@ -39,8 +43,10 @@ db = dict(
             # category: category of dataset
             # recode_version: version of recoded dataset 
         
-        train_dataset = "train_dataset",        # TODO: delete
-        train_dataset_schema = f"""     
+        # name of `recoded dataset` table
+        # recoded dataset: dataset that combines annotations data into a single file 
+        dataset = "dataset",        
+        dataset_schema = f"""     
                                       CREATE TABLE train_dataset (
                                       id INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                       dataset_purpose VARCHAR(10) NOT NULL,

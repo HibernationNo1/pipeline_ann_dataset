@@ -53,13 +53,13 @@ if __name__=="__main__":
     cursor = database.cursor() 
     
     
-    create_table(cursor, cfg.db.table.ann_dataset, cfg.db.table.ann_dataset_schema)
-    create_table(cursor, cfg.db.table.image_dataset, cfg.db.table.image_dataset_schema)
-    create_table(cursor, cfg.db.table.train_dataset, cfg.db.table.train_dataset_schema)
+    create_table(cursor, cfg.db.table.anns, cfg.db.table.anns_schema)
+    create_table(cursor, cfg.db.table.image_data, cfg.db.table.image_data_schema)
+    create_table(cursor, cfg.db.table.dataset, cfg.db.table.dataset_schema)
 
-    num_results = cursor.execute(f"SELECT * FROM {cfg.db.table.ann_dataset} WHERE ann_version = '{cfg.dvc.ann.version}'")
+    num_results = cursor.execute(f"SELECT * FROM {cfg.db.table.anns} WHERE ann_version = '{cfg.dvc.ann.version}'")
     assert num_results == 0, f"ann version: {cfg.dvc.ann.version} has been stored in DB!!  "\
-           f"\n     DB: {cfg.db.db_name},         table: {cfg.db.table.ann_dataset},     quantity: {num_results} "
+           f"\n     DB: {cfg.db.db_name},         table: {cfg.db.table.anns},     quantity: {num_results} "
     
    
                               
@@ -67,14 +67,14 @@ if __name__=="__main__":
     for i, img_json_path in enumerate(zip(image_list, json_list)):
         image_path, json_path = img_json_path
         image_name, json_name = os.path.basename(image_path), os.path.basename(json_path)
-        insert_sql = f"INSERT INTO {cfg.db.table.ann_dataset} "\
+        insert_sql = f"INSERT INTO {cfg.db.table.anns} "\
                      f"(json_name, image_name, category, ann_version) "\
                      f"VALUES('{json_name}', '{image_name}', '{cfg.dvc.dataset_cate}', '{cfg.dvc.ann.version}');"
         
         cursor.execute(insert_sql)
     
-    num_results = cursor.execute(f"SELECT * FROM {cfg.db.table.ann_dataset} WHERE ann_version = '{cfg.dvc.ann.version}'")
-    assert num_results == len(json_list), f"sql:: `INSERT INTO {cfg.db.table.ann_dataset}` didn't work"
+    num_results = cursor.execute(f"SELECT * FROM {cfg.db.table.anns} WHERE ann_version = '{cfg.dvc.ann.version}'")
+    assert num_results == len(json_list), f"sql:: `INSERT INTO {cfg.db.table.anns}` didn't work"
     
     
     whether_run_commit(cfg, database, image_list)

@@ -9,6 +9,7 @@ dvc = dict(
         version = "0.0.1",
     ),
     
-    ann_dataset_bucket_name = "ann_dataset_taeuk4958",
-    record_dataset_bucket_name = 'record_dataset_taeuk4958'
+    bucket = dict(
+        ann = "ann_dataset_taeuk4958"
     )
+)
