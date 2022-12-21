@@ -8,9 +8,9 @@ db = dict(
     table = dict(
         # name of `annotations data`` table     
         # annotations data: dataset made with labelme.exe
-        anns = "ann_dataset",           
+        anns = "ann_data",           
         anns_schema = f"""
-                              CREATE TABLE ann_dataset (
+                              CREATE TABLE ann_data (
                               id INT UNSIGNED NOT NULL AUTO_INCREMENT,
                               json_name VARCHAR(200) NOT NULL,
                               image_name VARCHAR(200) NOT NULL,
@@ -47,7 +47,7 @@ db = dict(
         # recoded dataset: dataset that combines annotations data into a single file 
         dataset = "dataset",        
         dataset_schema = f"""     
-                                      CREATE TABLE train_dataset (
+                                      CREATE TABLE dataset (
                                       id INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                       dataset_purpose VARCHAR(10) NOT NULL,
                                       category VARCHAR(20) NOT NULL,
