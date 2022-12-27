@@ -1,5 +1,5 @@
 [core]
-    remote = recode_dataset
+    remote = ann_dataset
 ['remote "ann_dataset"']
     url = gs://ann_dataset_taeuk4958
 ['remote "recode_dataset"']
