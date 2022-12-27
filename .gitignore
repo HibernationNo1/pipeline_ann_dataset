@@ -1,4 +1,6 @@
 /__pycache__
 *.pyc
+*.txt
 client_secrets.json
+
 start.sh
