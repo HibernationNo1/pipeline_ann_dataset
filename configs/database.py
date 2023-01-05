@@ -8,7 +8,7 @@ db = dict(
     table = dict(
         # name of `annotations data`` table     
         # annotations data: dataset made with labelme.exe
-        anns = "ann_data",           
+        anns = "ann_data",     # TODO : add column named ann_name      
         anns_schema = f"""
                               CREATE TABLE ann_data (
                               id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -26,7 +26,7 @@ db = dict(
     
         # name of `image dataset`` table.     
         # image dataset: images for training or validation
-        image_data = "image_data",      
+        image_data = "image_data",     # TODO : add column named recode_name 
         image_data_schema = f"""
                                       CREATE TABLE image_data (
                                       id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -45,7 +45,7 @@ db = dict(
         
         # name of `recoded dataset` table
         # recoded dataset: dataset that combines annotations data into a single file 
-        dataset = "dataset",        
+        dataset = "dataset",       # TODO : add column named recode_name 
         dataset_schema = f"""     
                                       CREATE TABLE dataset (
                                       id INT UNSIGNED NOT NULL AUTO_INCREMENT,

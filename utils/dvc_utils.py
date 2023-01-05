@@ -3,8 +3,7 @@ import glob
 import re
 from dvc.config import Config
 
-
-def check_dvc_config(remote_user_config):
+def get_dvc_config(remote_user_config):
     dvc_config_path = osp.join(Config().dvc_dir, "config")
     with open(dvc_config_path, "r") as dvc_config:
         # in here, will be erased all contents of 'dvc_config'
@@ -69,7 +68,7 @@ def check_dvc_dataset_status(cfg):
     assert len(image_list) == len(json_list), f"number of images and json files are not same!!  \n"\
         f"number of images {len(image_list)},     number of json files : {len(json_list)}"\
     
-    dvc_cfg = check_dvc_config(cfg.dvc.remote)
+    dvc_cfg = get_dvc_config(cfg.dvc.remote)
     
     credentials = osp.join(os.getcwd(), ".dvc", "config.local")
     assert osp.isfile(credentials), f"\n  >> Path: {credentials} is not exist!!   "\
