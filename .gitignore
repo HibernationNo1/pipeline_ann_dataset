@@ -3,4 +3,6 @@
 *.txt
 client_secrets.json
 
+*.json
+*.jpg
 start.sh
