@@ -1,0 +1,5 @@
+outs:
+- md5: 9b21d59d3d6ba90d6b57ee891e0a5931.dir
+  size: 1633353575
+  nfiles: 500
+  path: board_dataset
