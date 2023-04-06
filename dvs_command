@@ -1,6 +1,12 @@
 # dvc add ann_dataset/board_dataset
 # dvc push
-# commit: board_dataset v0.0.4
+# commit: docs: tag: board_dataset_v0.0.5
+
+# python main.py \
+#     --cfg configs/config.py \
+#     --db_host {IP} \
+#     --db_port {port} \
+#     --db_passwd {ps}  
 
 
 # dvc remote modify --local ann_dataset credentialpath client_secrets.json
