@@ -1,5 +1,7 @@
 # dvc add ann_dataset/board_dataset
 # dvc push
+# commit: board_dataset v0.0.4
+
 
 # dvc remote modify --local ann_dataset credentialpath client_secrets.json
 # dvc pull ann_dataset/board_dataset
