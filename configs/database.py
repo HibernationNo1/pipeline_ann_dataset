@@ -34,14 +34,14 @@ db = dict(
                                       image_name VARCHAR(200) NOT NULL,
                                       record_file VARCHAR(200) NOT NULL, 
                                       category VARCHAR(20) NOT NULL,
-                                      record_version VARCHAR(10) NOT NULL,
+                                      train_version VARCHAR(10) NOT NULL,
                                       PRIMARY KEY(id)
                                       );
                                       """,
             # dataset_purpose: one of `train` and `val`
             # image_name: path of image data file for train or validation
             # category: category of dataset
-            # record_version: version of recorded dataset 
+            # train_version: version of recorded dataset 
         
         # name of `recorded dataset` table
         # recorded dataset: dataset that combines annotations data into a single file 
@@ -52,7 +52,7 @@ db = dict(
                                       dataset_purpose VARCHAR(10) NOT NULL,
                                       category VARCHAR(20) NOT NULL,
                                       record_file VARCHAR(200) NOT NULL,
-                                      record_version VARCHAR(10) NOT NULL,
+                                      train_version VARCHAR(10) NOT NULL,
                                       PRIMARY KEY(id)
                                       );
                                       """
@@ -60,7 +60,7 @@ db = dict(
             # record_file: path of record dataset file(.json format). 
             #              are for train or validation(e.g. train_dataset.json or val_data.json)
             # category: category of dataset
-            # record_version: version of recorded dataset 
+            # train_version: version of recorded dataset 
     )
 
 )
