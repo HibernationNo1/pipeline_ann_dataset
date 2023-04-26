@@ -1,14 +1,14 @@
 # dvc add ann_dataset/board_dataset
 # dvc push
-# commit: docs: tag: board_dataset_ann_v0.0.6
+# commit: docs: tag: board_dataset_ann_v0.0.7
 
 
 # tag:
-# -ann: board_dataset_ann_v0.0.6
+# -ann: board_dataset_ann_v0.0.7
 # -train: board_dataset_train_v0.0.2
 
 # config
-# dvc.target_dataset.version: v0.0.6
+# dvc.target_dataset.version: v0.0.7
 
 # python main.py \
 #     --cfg configs/config.py \
