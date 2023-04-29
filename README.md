@@ -2,11 +2,40 @@
 
 google cloud의 storage와 연동하여 dataset을 version 관리하는 repository입니다.
 
-관리되는 dataset은 `labeme.exe`를 통해 각 image에 대하여 라벨링을 수행한 **annotation dataset**과, training을 진행할 때 직접적으로 input으로 사용되는 **training dataset**이 있습니다.
+- 관리되는 dataset은 `labeme.exe`를 통해 각 image에 대하여 라벨링을 수행한 **annotation dataset**과, training을 진행할 때 직접적으로 input으로 사용되는 **training dataset**이 있습니다.
+
+- 해당 repository는 `tag`를 통해 **annotation dataset**과 **training dataset**의 commit을 구분합니다.
+
+- Annotation dataset을 최초로 생성하거나,  dataset의 update를 한 경우 
+
+  1. dvc에 의해 google storage에 dataset을 push하고 git으로 version관리를 수행합니다.
+  2. 해당 repo의 [main.py](https://github.com/HibernationNo1/pipeline_dataset/blob/master/main.py)에 의해 DB에 data의 infomation이 저장됩니다.
+
+  ![](https://github.com/HibernationNo1/project_4_kubeflow_pipeline/blob/docs/description/dataset%20init.png?raw=true)
+
+- Kubeflow pipeline의 component에 의한 **recording**, **training**, **evaluation**과정에서 annotation 및 training dataset을 download, upload하는데 사용됩니다.
+
+  component code상에서의 과정은 아래와 같습니다.
+
+  1. Git clone, checkout to `tag`
+  2. Run `dvc pull`
+  3. Run dvc push, insert to DB(only record)
+
+  예시) component:  `record`
+
+  ![](https://github.com/HibernationNo1/project_4_kubeflow_pipeline/blob/master/description/Record.png?raw=true)
 
 
 
-### install dvc 
+---
+
+
+
+## install dvc
+
+[공식 docs](https://dvc.org/doc/install)
+
+google cloud storage와 연동하여 사용하는 dvc설치 시 아래의 명령어를 따릅니다.
 
 ```
 $ pip install dvc[gs]
@@ -39,9 +68,11 @@ remote는 아래와 같이 구성했습니다.
 1. **`ann_dataset`**: `url = gs://ann_dataset_hibernation`
 2. **`train_dataset`**: `url = gs://train_dataset_hibernation`
 
+위의 두 remote는 google sotrage에 dataset의 push 및 pull을 진행할 때 특정 bucket을 타겟으로 하여 결정했습니다.
 
 
-- add
+
+- remote add
 
   ```
   $ dvc remote add -d ann_dataset gs://ann_dataset_hibernation
@@ -57,11 +88,11 @@ remote는 아래와 같이 구성했습니다.
 
 
 
+---
 
 
 
-
-### dvc push to google storage
+## `dvc push` to google storage
 
 #### 1. dvc add dataset
 
@@ -79,7 +110,7 @@ $ dvc add ann_dataset/board_dataset
 $ dvc push
 ```
 
-> 이 과정을 최초로 수행할 때 아래 출력이 나오며 인증 과정이 필요.
+> 이 과정을 최초로 수행할 때 아래 출력이 나오며 인증 과정이 필요합니다.
 >
 > ```
 > Go to the following link in your browser:
@@ -103,7 +134,7 @@ $ dvc push
 
 - google storage에 접근 권한을 갖기 위해 google cloud `credentials`을 통해 프로젝드에 대한 엑세스 권한을 부여했습니다.
 
-  접속 key값은 해당 dir에 `client_secrets.json`으로 저장했으며, `.gitignore`에 포함시켜 사용자 개인이 직접 관리하도록 합니다.
+  접속 key값은 해당 dir에 `client_secrets.json`으로 저장했으며, `.gitignore`에 포함시켜 사용자 개인이 local상에서만 직접 관리하도록 합니다.
 
   
 
@@ -113,7 +144,12 @@ $ dvc push
   $ dvc remote modify --local {remote name} credentialpath {path of client_secrets.json}
   ```
 
-  
+
+
+
+---
+
+
 
 ## Insert dataset information into DataBase
 
@@ -184,7 +220,7 @@ $ sudo systemctl restart mysql
 
 #### 2. Insert into DataBase
 
-`DVC`, `MySQL` python SDK를 활용하여 특정 device에 구축된 DB에 dataset의 각 data에 대한 정보를 저장합니다.
+ [main.py](https://github.com/HibernationNo1/pipeline_dataset/blob/master/main.py)를 실행 시 `MySQL` python SDK를 활용하여 특정 device에 구축된 DB에 dataset의 각 data에 대한 정보를 저장합니다.
 
 ```
 python main.py \
@@ -193,8 +229,6 @@ python main.py \
     --db_port **** \
     --db_passwd ****  
 ```
-
-
 
 
 
