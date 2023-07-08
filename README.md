@@ -8,6 +8,8 @@ google cloud storage와 연동하여 dataset의 version을 관리하는 reposito
 
 ### install dvc 
 
+[공식 docs](https://dvc.org/doc/install)
+
 ```
 $ pip install dvc[gs]
 ```
