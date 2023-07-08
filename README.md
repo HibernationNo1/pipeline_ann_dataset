@@ -3,10 +3,15 @@
 google cloud storage와 연동하여 dataset의 version을 관리하는 repository입니다.
 
 
+- 해당 repository는 `tag`를 통해 **annotation dataset**과 **training dataset**의 commit을 구분합니다.
 
 ## How to Use
 
-### install dvc 
+## install dvc
+
+[공식 docs](https://dvc.org/doc/install)
+
+google cloud storage와 연동하여 사용하는 dvc설치 시 아래의 명령어를 따릅니다.
 
 ```
 $ pip install dvc[gs]
@@ -39,9 +44,11 @@ remote는 아래와 같이 구성했습니다.
 1. **`ann_dataset`**: `url = gs://ann_dataset_hibernation`
 2. **`train_dataset`**: `url = gs://train_dataset_hibernation`
 
+위의 두 remote는 google sotrage에 dataset의 push 및 pull을 진행할 때 특정 bucket을 타겟으로 하여 결정했습니다.
 
 
-- add
+
+- remote add
 
   ```
   $ dvc remote add -d ann_dataset gs://ann_dataset_hibernation
@@ -57,11 +64,11 @@ remote는 아래와 같이 구성했습니다.
 
 
 
+---
 
 
 
-
-### dvc push to google storage
+## `dvc push` to google storage
 
 #### 1. dvc add dataset
 
@@ -79,7 +86,7 @@ $ dvc add ann_dataset/board_dataset
 $ dvc push
 ```
 
-> 이 과정을 최초로 수행할 때 아래 출력이 나오며 인증 과정이 필요.
+> 이 과정을 최초로 수행할 때 아래 출력이 나오며 인증 과정이 필요합니다.
 >
 > ```
 > Go to the following link in your browser:
@@ -103,7 +110,7 @@ $ dvc push
 
 - google storage에 접근 권한을 갖기 위해 google cloud `credentials`을 통해 프로젝드에 대한 엑세스 권한을 부여했습니다.
 
-  접속 key값은 해당 dir에 `client_secrets.json`으로 저장했으며, `.gitignore`에 포함시켜 사용자 개인이 직접 관리하도록 합니다.
+  접속 key값은 해당 dir에 `client_secrets.json`으로 저장했으며, `.gitignore`에 포함시켜 사용자 개인이 local상에서만 직접 관리하도록 합니다.
 
   
 
@@ -113,7 +120,12 @@ $ dvc push
   $ dvc remote modify --local {remote name} credentialpath {path of client_secrets.json}
   ```
 
-  
+
+
+
+---
+
+
 
 ## Insert dataset information into DataBase
 
@@ -184,7 +196,7 @@ $ sudo systemctl restart mysql
 
 #### 2. Insert into DataBase
 
-`DVC`, `MySQL` python SDK를 활용하여 특정 device에 구축된 DB에 dataset의 각 data에 대한 정보를 저장합니다.
+ [main.py](https://github.com/HibernationNo1/pipeline_dataset/blob/master/main.py)를 실행 시 `MySQL` python SDK를 활용하여 특정 device에 구축된 DB에 dataset의 각 data에 대한 정보를 저장합니다.
 
 ```
 python main.py \
@@ -193,8 +205,6 @@ python main.py \
     --db_port **** \
     --db_passwd ****  
 ```
-
-
 
 
 
