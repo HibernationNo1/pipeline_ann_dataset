@@ -1,10 +1,10 @@
-# README
+# Managing Dataset 
 
-google cloud의 storage와 연동하여 dataset을 version 관리하는 repository입니다.
-
-관리되는 dataset은 `labeme.exe`를 통해 각 image에 대하여 라벨링을 수행한 **annotation dataset**과, training을 진행할 때 직접적으로 input으로 사용되는 **training dataset**이 있습니다.
+google cloud storage와 연동하여 dataset의 version을 관리하는 repository입니다.
 
 
+
+## How to Use
 
 ### install dvc 
 
