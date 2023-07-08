@@ -1,35 +1,11 @@
-# README
+# Managing Dataset 
 
-google cloud의 storage와 연동하여 dataset을 version 관리하는 repository입니다.
+google cloud storage와 연동하여 dataset의 version을 관리하는 repository입니다.
 
-- 관리되는 dataset은 `labeme.exe`를 통해 각 image에 대하여 라벨링을 수행한 **annotation dataset**과, training을 진행할 때 직접적으로 input으로 사용되는 **training dataset**이 있습니다.
 
 - 해당 repository는 `tag`를 통해 **annotation dataset**과 **training dataset**의 commit을 구분합니다.
 
-- Annotation dataset을 최초로 생성하거나,  dataset의 update를 한 경우 
-
-  1. dvc에 의해 google storage에 dataset을 push하고 git으로 version관리를 수행합니다.
-  2. 해당 repo의 [main.py](https://github.com/HibernationNo1/pipeline_dataset/blob/master/main.py)에 의해 DB에 data의 infomation이 저장됩니다.
-
-  ![](https://github.com/HibernationNo1/project_4_kubeflow_pipeline/blob/docs/description/dataset%20init.png?raw=true)
-
-- Kubeflow pipeline의 component에 의한 **recording**, **training**, **evaluation**과정에서 annotation 및 training dataset을 download, upload하는데 사용됩니다.
-
-  component code상에서의 과정은 아래와 같습니다.
-
-  1. Git clone, checkout to `tag`
-  2. Run `dvc pull`
-  3. Run dvc push, insert to DB(only record)
-
-  예시) component:  `record`
-
-  ![](https://github.com/HibernationNo1/project_4_kubeflow_pipeline/blob/master/description/Record.png?raw=true)
-
-
-
----
-
-
+## How to Use
 
 ## install dvc
 
