@@ -1,7 +1,7 @@
 import argparse
 import os, os.path as osp
 
-from hibernation_no1.configs.config import Config
+from configs.config import Config
 from utils.dvc_utils import check_dvc_dataset_status
 from utils.db_utils import create_table, whether_run_commit
 
